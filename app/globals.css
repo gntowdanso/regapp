@@ -13,9 +13,106 @@
     --foreground: #ededed;
   }
 }
-
+/*
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+*/
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7fafc; /* Light gray background */
+}
+
+.app-container {
+  display: grid;
+  grid-template-areas:
+    "top-menu top-menu"
+    "left-menu content-area";
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
+}
+
+.top-menu {
+  grid-area: top-menu;
+  background-color: #1a202c;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.left-menu {
+  grid-area: left-menu;
+  background-color: #2d3748;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.content-area {
+  grid-area: content-area;
+  background-color: white;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.top-nav a, .side-nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+  padding: 5px 10px;
+}
+
+.side-nav a {
+  margin: 10px 0;
+}
+
+.top-nav a:hover, .side-nav a:hover {
+  background-color: #4a5568;
+  border-radius: 5px;
+}
+
+ 
+
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* For small screens (mobile) */
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-areas:
+      "top-menu"
+      "content-area";
+    grid-template-columns: 1fr; /* Full-width layout */
+  }
+
+  .left-menu {
+    display: none; /* Hide left menu on mobile */
+  }
+
+  /* Adjust the content area to take up full width */
+  .content-area {
+    padding: 10px;
+  }
+}
+
+/* For medium screens (tablet) */
+@media (max-width: 1024px) {
+  .app-container {
+    grid-template-columns: 200px 1fr; /* Reduce left-menu width */
+  }
+
+  .left-menu {
+    padding: 15px; /* Increase padding on tablets */
+  }
 }

@@ -1,0 +1,221 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+   id         Int      @id @default(autoincrement())
+  name       String?
+  userId     String?
+  userName   String?  @unique
+  password   String
+  UserStatus String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+ 
+  providerType String?
+  @@index([id]) // Index for efficient user lookups
+}
+
+model Will {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?
+  documentUrl String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  userId String?
+  @@index([id]) // Index for efficient user lookups
+}
+
+
+model Asset {
+  id            Int @id @default(autoincrement())
+  userId       String
+  willId       Int
+  assetType    String 
+  location     String
+  name         String   @db.VarChar(50)
+  description  String?  @db.VarChar(1000)
+  value        Float        @default(0.0)
+  beneficiaryId Int ? 
+   
+  imageUrl     String?      // URL of the asset image
+  @@index([id]) // Index for efficient user lookups
+}
+
+model AssetBeneficiarySharing {
+  id                  Int      @id @default(autoincrement())
+  userId              String
+  willId              Int
+  assetId             Int
+  beneficiaryId       Int
+  isSharingPercentage Boolean
+  assetShareRatio     Float
+  assetValue          Float
+  receiveSharedValue  Float
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  @@index([id]) // Index for efficient user lookups
+  
+}
+// Relationships
+  //will                Will?    @relation(fields: [willId], references: [id])
+  //asset               Asset?   @relation(fields: [assetId], references: [id])
+  //beneficiary         Beneficiary? @relation(fields: [beneficiaryId], references: [id])
+model Beneficiary {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  name         String
+  email        String?   @unique
+  phoneNumber  String?   @unique
+  relationship String?
+  share        Float     @default(0.0) // Percentage of the inheritance
+  profileImage String?   // URL of the beneficiary's image
+  @@index([id]) // Index for efficient user lookups
+  // Relationships
+  //user         User?     @relation(fields: [userId], references: [id])
+}
+ 
+model Executor {
+  id          Int      @id @default(autoincrement()) // Auto-incrementing primary key
+  name        String
+  willId      Int
+  userId      String
+  email       String   @unique
+  phoneNumber String?  @unique
+  address     String?  // Optional address
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([id]) // Index for efficient user lookups
+  // Relationships
+ // will        Will?    @relation(fields: [willId], references: [id])
+ // user        User?    @relation(fields: [userId], references: [id])
+}
+
+model Invoice {
+  id           Int          @id @default(autoincrement())
+  userId       String
+  willId       Int
+  amount       Float         @default(0.0) // Total invoice amount
+  status       InvoiceStatus @default(PENDING) // Enum: PENDING, PAID, CANCELLED
+  issuedAt     DateTime      @default(now())
+  dueDate      DateTime
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  @@index([id]) // Index for efficient user lookups
+  // Relationships
+  //user         User?         @relation(fields: [userId], references: [id])
+  //will         Will?         @relation(fields: [willId], references: [id])
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  invoiceId      Int
+  userId         String
+  amount         Float         @default(0.0) // Payment amount
+  method         PaymentMethod @default(CREDIT_CARD) // Enum: CREDIT_CARD, BANK_TRANSFER, CASH
+  status         PaymentStatus @default(COMPLETED) // Enum: COMPLETED, PENDING, FAILED
+  paidAt         DateTime      @default(now())
+  transactionId  String?       // Optional external transaction ID
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+@@index([id]) // Index for efficient user lookups
+  // Relationships
+  //invoice        Invoice?      @relation(fields: [invoiceId], references: [id])
+  //user           User?         @relation(fields: [userId], references: [id])
+}
+
+model Contact {
+  id              Int          @id @default(autoincrement()) // Auto-incrementing primary key
+  userId          String
+  contactType     contactType  @default(USER) // Enum: USER, BENEFICIARY, EXECUTOR, ADMIN
+  telephoneNumber String       @unique
+  email           String?      @unique // Unique email address
+  address         String?      // Optional address
+  createdAt       DateTime     @default(now()) // Timestamp of record creation
+  updatedAt       DateTime     @updatedAt      // Automatically updates on record modification
+  @@index([id]) // Index for efficient user lookups
+  // Relationships
+  //user            User?        @relation(fields: [userId], references: [id])
+}
+
+
+model Session {
+  id                 Int   @id @default(autoincrement()) // Unique session ID
+  sessionToken       String   @unique             // Token to identify the session
+  userId             String                        // Foreign key to User
+  ipAddress          String?                      // User's IP address
+  userAgent          String?                      // User's browser or device info
+  expires            DateTime?   @default(now())                   // Expiration time for the session
+  createdAt          DateTime @default(now())     // Timestamp for when the session was created
+  updatedAt          DateTime @updatedAt          // Automatically updated when the session changes
+
+  // Relations
+  //user               User     @relation(fields: [userId], references: [id])
+
+  @@index([sessionToken]) // Add an index for efficient session lookups
+}
+model Account {
+  id                Int   @id @default(autoincrement()) // Unique account ID
+  userId            String                       // Foreign key to User
+  provider          String                       // Name of the authentication provider (e.g., "google")
+  providerAccountId String                       // Account ID from the provider
+  type              String                       // Account type (e.g., "oauth", "email", "credentials")
+  refresh_token     String?                      // OAuth refresh token
+  access_token      String?                      // OAuth access token
+  expires_at        Int?                         // Access token expiry (UNIX timestamp)
+  token_type        String?                      // OAuth token type (e.g., "Bearer")
+  scope             String?                      // Scopes associated with the access token
+  id_token          String?                      // OAuth ID token for OpenID Connect
+  session_state     String?                      // Provider-specific session state
+  createdAt         DateTime @default(now())     // Timestamp for when the account was created
+  updatedAt         DateTime @updatedAt          // Automatically updated when the account changes
+
+  // Relations
+ // user              User     @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId]) // Ensure unique combination of provider and providerAccountId
+  @@index([userId]) // Index for efficient user lookups
+}
+
+model AssetType {
+  id  Int @id @default(autoincrement())
+  name String
+}
+
+enum contactType {
+  USER
+  BENEFICIARY
+  EXECUTOR
+  ADMIN
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH
+}
+
+enum PaymentStatus {
+  COMPLETED
+  PENDING
+  FAILED
+}
