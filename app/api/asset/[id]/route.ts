@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
  
  
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: never } }) {
   try {
     const { id } = params;  // Destructure the id from the params object
     

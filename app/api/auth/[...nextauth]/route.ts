@@ -1,13 +1,13 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { PrismaClient,Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 // additional
  
 //import CredentialsProvider from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
-import { useState } from "react";
-import Email from "next-auth/providers/email";
+//import { useState } from "react";
+//import Email from "next-auth/providers/email";
 import Google from "next-auth/providers/google";
 const prisma = new PrismaClient();
 const handler = NextAuth({
@@ -29,6 +29,7 @@ const handler = NextAuth({
                 email: {},
                 password:{},
             },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             async authorize(credentials:any) 
             {
                
@@ -65,7 +66,8 @@ const handler = NextAuth({
       strategy: "jwt",
       }, 
     callbacks: {
-        async signIn({  user, account, profile, email, credentials}) {
+      // profile, email, credentials
+        async signIn({  user, account}) {
             if (account?.provider === "github"||account?.provider === "google") 
               {
                 
@@ -77,6 +79,7 @@ const handler = NextAuth({
                     });
                  //   console.log("first1 Log:",user.email);
                 if (!existingUser) {
+              /*
                   const newUser = {
                     name: user?.name || "",
                     email: user?.email || "",
@@ -87,7 +90,7 @@ const handler = NextAuth({
 
                     //provider: account.provider,
                   };
-                  
+                  */
                  // console.log("first2 Log:",user.email);
                   await prisma.users.create({ 
                     data: {

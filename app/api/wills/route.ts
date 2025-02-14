@@ -17,12 +17,14 @@ import formidable from 'formidable';
 //import { Response } from 'next/server';
  
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
+/*
 const form = formidable({
   uploadDir: UPLOAD_DIR,
   keepExtensions: true,
   maxFileSize: 10 * 1024 * 1024, // 10MB
   multiples: false,
 });
+*/
 
 export const config = {
   api: {
@@ -61,8 +63,11 @@ export async function POST(req: Request) {
      return NextResponse.json({ error: "No files received." }, { status: 400 });
    }
  
-   const buffer = Buffer.from(await file.arrayBuffer());
-   const filename =  file.name.replaceAll(" ", "_");
+   const buffer = Buffer.from(await (file as Blob).arrayBuffer());
+   if (!(file instanceof File)) {
+     return NextResponse.json({ error: "Invalid file received." }, { status: 400 });
+   }
+   const filename = file.name.replaceAll(" ", "_");
    console.log(filename);
    
 // Sanitize file name and move file to final location
@@ -155,6 +160,9 @@ if (file)
    
 
 
+if (!(file instanceof File)) {
+  return NextResponse.json({ error: "Invalid file received." }, { status: 400 });
+}
 const buffer = Buffer.from(await file.arrayBuffer());
 const filename =  file.name.replaceAll(" ", "_");
 console.log(filename);
@@ -247,6 +255,7 @@ export async function DELETE(req: Request)
 
       return new Response(JSON.stringify({ message: 'Will deleted successfully', deletedWill }), { status: 200 });
     
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error deleting user' }), { status: 500 });
   }

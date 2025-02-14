@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
  
  
+//import Dropdown from './dropdown'
 import Dropdown from './dropdown';
 interface AssetFormProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialData?: any;
   beneficiaries: { label: string; value: number }[]; // Beneficiary dropdown
 }
@@ -18,6 +21,7 @@ const AssetForm: React.FC<AssetFormProps> = ({ onSubmit, initialData, beneficiar
     imageUrl: initialData?.imageUrl || '',
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };

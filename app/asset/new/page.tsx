@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
  
 'use client';
 
@@ -19,18 +20,18 @@ const Page = () => {
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
 
       interface AssetFormProps {
-        onSubmit: (data: any) => void;
-        initialData?: any;
+        onSubmit: (data: never) => void;
+        initialData?: never;
         beneficiaries: { label: string; value: number }[]; // Beneficiary dropdown
       }
 
@@ -79,24 +80,34 @@ const Page = () => {
         const errorData = await res.json();
         setMessage(errorData.message || 'Error creating the record!');
       }
-    } catch (error) {
+    } catch (error)
+     {
       setMessage(`Error saving data`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 /*
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...dataVar, [name]: value });
   };
+
+   <Dropdown
+        label="Beneficiary"
+        options={beneficiaries}
+        value={dataVar.beneficiaryId}
+        onChange={(value) => handleChange('beneficiaryId', value)}
+      />:
   */
   
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string | number) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -138,12 +149,7 @@ const Page = () => {
           onChange={(e) => handleChange('description', e.target.value)}
           className="w-full border p-2 rounded-md"
         />
-        <Dropdown
-        label="Beneficiary"
-        options={beneficiaries}
-        value={dataVar.beneficiaryId}
-        onChange={(value) => handleChange('beneficiaryId', value)}
-      />
+       
         <label htmlFor="file" className="block mb-2">
           Upload Will (optional)
         </label>
