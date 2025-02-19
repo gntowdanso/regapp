@@ -8,8 +8,17 @@ export default function Page() {
   const { data: session } = useSession();
   const userId = session?.user?.email;
 
-  const [ds, setData] = useState([]);
+  interface WillData {
+    id: string;
+    title: string;
+    description: string;
+    isActive: boolean;
+    documentUrl?: string;
+  }
+
+  const [ds, setData] = useState<WillData[]>([]);
   const [message, setMessage] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
@@ -27,7 +36,7 @@ export default function Page() {
         setMessage(`Error fetching data`);
       }
     } catch (error) {
-      setMessage(`Error fetching data: ${error.message}`);
+      setMessage(`Error fetching data: ${(error as Error).message}`);
     } finally {
       setLoading(false);
     }
@@ -38,17 +47,17 @@ export default function Page() {
     if (userId) {
       fetchData();
     }
-  }, [userId]);
+  }, [fetchData, userId]);
 
   const handleAddUser = () => {
     router.push('/will/new');
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (id: string) => {
     router.push(`/will/update/${id}`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this will?')) {
       try {
         const res = await fetch(`/api/wills/${id}`, {
@@ -63,7 +72,7 @@ export default function Page() {
           setMessage(`Error: ${errorData.message}`);
         }
       } catch (error) {
-        setMessage(`Error deleting a record: ${error.message}`);
+        setMessage(`Error deleting a record: ${(error as Error).message}`);
       }
     }
   };
@@ -118,6 +127,7 @@ export default function Page() {
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300 text-sm text-center">
                   {data.documentUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={data.documentUrl}
                       alt="Document"

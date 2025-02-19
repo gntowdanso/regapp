@@ -11,19 +11,10 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
  
-import formidable from 'formidable';
  
-//import { Readable } from 'stream';
-//import { Response } from 'next/server';
  
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
-const form = formidable({
-  uploadDir: UPLOAD_DIR,
-  keepExtensions: true,
-  maxFileSize: 10 * 1024 * 1024, // 10MB
-  multiples: false,
-});
-
+ 
 export const config = {
   api: {
     bodyParser: false, // Disable default body parsing
@@ -61,8 +52,8 @@ export async function POST(req: Request) {
      return NextResponse.json({ error: "No files received." }, { status: 400 });
    }
  
-   const buffer = Buffer.from(await file.arrayBuffer());
-   const filename =  file.name.replaceAll(" ", "_");
+   const buffer = Buffer.from(await (file as Blob).arrayBuffer());
+   const filename = (file as File).name.replaceAll(" ", "_");
    console.log(filename);
    
  
@@ -152,14 +143,11 @@ if (file)
    
 
 
-const buffer = Buffer.from(await file.arrayBuffer());
-const filename =  file.name.replaceAll(" ", "_");
+const buffer = Buffer.from(await (file as Blob).arrayBuffer());
+const filename = (file as File).name.replaceAll(" ", "_");
 console.log(filename);
 
-// Sanitize file name and move file to final location
-//const sanitizedFileName = `${crypto.randomUUID()}-${path.basename(filename || '')}`;
-//const finalFilePath = path.join(UPLOAD_DIR, sanitizedFileName);
-//await fs.rename(file.filepath, finalFilePath);
+ 
 
 //const { fields, files } = formData;
 const title = formData.get("title");
@@ -244,6 +232,7 @@ export async function DELETE(req: Request)
 
       return new Response(JSON.stringify({ message: 'Will deleted successfully', deletedWill }), { status: 200 });
     
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error deleting user' }), { status: 500 });
   }

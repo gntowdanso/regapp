@@ -8,19 +8,10 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
  
-import formidable from 'formidable';
  
-//import { Readable } from 'stream';
-//import { Response } from 'next/server';
  
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
-const form = formidable({
-  uploadDir: UPLOAD_DIR,
-  keepExtensions: true,
-  maxFileSize: 10 * 1024 * 1024, // 10MB
-  multiples: false,
-});
-
+ 
 export const config = {
   api: {
     bodyParser: false, // Disable default body parsing
@@ -58,8 +49,8 @@ export async function POST(req: Request) {
      return NextResponse.json({ error: "No files received." }, { status: 400 });
    }
  
-   const buffer = Buffer.from(await file.arrayBuffer());
-   const filename =  file.name.replaceAll(" ", "_");
+  const buffer = Buffer.from(await (file as File).arrayBuffer());
+   const filename = (file instanceof File) ? file.name.replaceAll(" ", "_") : "";
    console.log(filename);
    
  
@@ -149,8 +140,12 @@ if (file)
    
 
 
-const buffer = Buffer.from(await file.arrayBuffer());
-const filename =  file.name.replaceAll(" ", "_");
+//const buffer = Buffer.from(await file.arrayBuffer());
+//const filename =  file.name.replaceAll(" ", "_");
+
+
+const buffer = Buffer.from(await (file as File).arrayBuffer());
+const filename = (file instanceof File) ? file.name.replaceAll(" ", "_") : "";
 console.log(filename);
 
 // Sanitize file name and move file to final location

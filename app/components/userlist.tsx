@@ -1,4 +1,10 @@
-const UserList = ({ users, onDelete }: { users: any[]; onDelete: (id: string) => void }) => {
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+const UserList = ({ users, onDelete }: { users: User[]; onDelete: (id: string) => void }) => {
     return (
       <div className="flex flex-col gap-4">
         {users.map((user) => (

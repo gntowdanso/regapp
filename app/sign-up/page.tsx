@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 import { signIn } from "next-auth/react";
-import Google from "next-auth/providers/google";
+//import Google from "next-auth/providers/google";
 
 const SignUp = () => {
   const [form, setForm] = useState({

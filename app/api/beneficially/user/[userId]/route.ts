@@ -1,10 +1,10 @@
 import { getByUserId } from "@/lib/beneficialylib";
 
-export async function GET({ params }: { params: { userId: string } })
+export async function GET(request: Request,{ params }: { params:Promise< { userId: string }> })
 {
   try {
    
-    const { userId } = params;   
+    const userId = (await params).userId  
     
     const data = await getByUserId(userId);
    

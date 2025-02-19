@@ -1,11 +1,12 @@
 import { getByUserId } from "@/lib/assetlib";
-
-export async function GET({ params }: { params: { userId: string } })
+//import { NextResponse } from 'next/server';
+export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> })
 {
   try {
    
-    const { userId } = params;   
-    
+   // const { userId } = params;   
+    const userId = (await params).userId // 'a', 'b', or 'c'
+   // const { userId } = await params;
     const data = await getByUserId(userId);
    
     return new Response(JSON.stringify(data), { status: 200 });
@@ -16,3 +17,9 @@ export async function GET({ params }: { params: { userId: string } })
     return new Response(JSON.stringify({ message: 'Error fetching data' }), { status: 500 });
   }
 }
+
+//import { NextRequest, NextResponse } from "next/server";
+
+
+
+ 

@@ -1,10 +1,10 @@
 import { getByUserId } from "@/lib/will";
 
-export async function GET({ params }: { params: { userId: string } })
+export async function GET(request: Request,{ params }: { params: Promise<{ userId: string }> })
 {
   try {
    
-    const { userId } = params;   
+    const  userId =(await params).userId;   
    // console.log("getting data",userId);
     const data = await getByUserId(userId);
   // console.log("data returned", data);

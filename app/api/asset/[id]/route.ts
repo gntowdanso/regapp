@@ -1,46 +1,66 @@
- 
- 
+  
+
 import { deleteData, getById } from "@/lib/assetlib";
-import { NextRequest, NextResponse } from "next/server";
- 
+import { NextResponse } from "next/server";
+
  
 
-export async function GET(req: NextRequest, { params }: { params: { id: never } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id // 'a', 'b', or 'c'
+
+  const will = await getById(id);
+
+  // If no asset found, return 404
+  if (!will) 
+    {
+    return NextResponse.json({ error: "Data not found" }, { status: 404 });
+  }
+
+  // Return the fetched will with a 200 status code
+  return NextResponse.json(will, { status: 200 });
+
+ // return NextResponse.json(null, { status: 200 });
+
+
+}
+// Define the route handler for GET requests
+ 
+// Define the route handler for DELETE requests
+
+export async function DELETE( 
+  request: Request, { params }: { params: Promise<{ id: string }>}
+
+) {
   try {
-    const { id } = params;  // Destructure the id from the params object
-    
-    const will = await getById(id); // Function to get the will by id
-    
-    if (!will) {
-      return NextResponse.json({ error: "data not found" }, { status: 404 });
+  //  const { id } = params;  // Destructure the id from the params object
+  const id = (await params).id 
+
+    if (typeof id !== 'string') {
+      return NextResponse.json(
+        { error: 'Invalid ID type. ID must be a string.' },
+        { status: 400 }
+      );
+    }
+    console.log("Deleting asset with ID:", id);  // Log ID for debugging
+
+    // Attempt to delete the data
+    const deletedWill = await deleteData(id);
+
+    // Check if the delete operation was successful
+    if (!deletedWill) {
+      return NextResponse.json({ message: "Data not found or deletion failed" }, { status: 404 });
     }
 
-    return NextResponse.json(will, { status: 200 });
-    
+    // Return a successful response with a message and the deleted data
+    return NextResponse.json({ message: 'Deletion completed successfully', deletedWill }, { status: 200 });
+
   } catch (error) {
-    console.error('Error fetching the data:', error);  // Logging error for debugging
-    return NextResponse.json({ message: 'Error fetching data' }, { status: 500 });
+    // Log error and return a 500 status with a message
+    console.error('Error deleting data:', error);
+    return NextResponse.json({ message: 'Error deleting data' }, { status: 500 });
   }
 }
-
-
-
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-    try {
-       
-       
-        const { id } = params;  // Destructure the id from the params object
-        console.log("api delete:",id)
-        const deletedWill = await deleteData(id);
-           
-    
-          return new Response(JSON.stringify({ message: ' deletion completed successfully', deletedWill }), { status: 200 });
-  
-     
-      
-    } catch (error) {
-      console.error('Error fetching data :', error);  // Logging error for debugging
-      return NextResponse.json({ message: 'Error fetching data' }, { status: 500 });
-    }
-  }
   

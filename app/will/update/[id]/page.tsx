@@ -1,18 +1,21 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
  
+import { useRouter, useParams } from "next/navigation"; 
 
-export default function UpdatePage({ params }: { params: { id: string } }) {
+export default function UpdatePage() 
+{
+ 
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const [error, setError] = useState("");
+  const { id } = useParams<{ id: string }>(); // Use useParams() instead of props
+  //const [ setError] = useState("");
    
   const [file, setFile] = useState(null);
   
  // const { data: session, status } = useSession();
-  const id = params.id;
+   
 
   const [dataVar, setData] = useState({
     id: id, 
@@ -33,8 +36,11 @@ export default function UpdatePage({ params }: { params: { id: string } }) {
         if (!res.ok) throw new Error("Failed to fetch will details");
         const data = await res.json();
         setData(data);
-      } catch (err: unknown) {
-        setError(err.message);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (err: unknown) 
+      {
+        //setError(err.message);
+        setMessage(`Error: Error submiting}`);
       } finally {
         setLoading(false);
       }
@@ -42,11 +48,12 @@ export default function UpdatePage({ params }: { params: { id: string } }) {
 
     fetchData();
   }, [id]);
-  const handleFileChange = (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleFileChange = (e:any) => {
     setFile(e.target.files[0]);
   };
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: unknown) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
   /*
@@ -92,8 +99,10 @@ export default function UpdatePage({ params }: { params: { id: string } }) {
         const errorData = await res.json();
         setMessage(`Error: ${errorData.error}`);
       }
-    } catch (error: unknown) {
-      setMessage(`Error: ${error.message}`);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) 
+    {
+      setMessage(`Error: Error submiting}`);
     }
   };
 
@@ -134,6 +143,7 @@ export default function UpdatePage({ params }: { params: { id: string } }) {
         />
         <div>
           {dataVar.documentUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={dataVar.documentUrl}
                       alt="Document"

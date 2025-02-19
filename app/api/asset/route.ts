@@ -62,8 +62,8 @@ export async function POST(req: Request) {
      return NextResponse.json({ error: "No files received." }, { status: 400 });
    }
  
-   const buffer = Buffer.from(await file.arrayBuffer());
-   const filename =  file.name.replaceAll(" ", "_");
+   const buffer = Buffer.from(await (file as Blob).arrayBuffer());
+   const filename = (file as File).name.replaceAll(" ", "_");
    console.log(filename);
    
 // Sanitize file name and move file to final location

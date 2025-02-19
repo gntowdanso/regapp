@@ -6,7 +6,7 @@ import "./globals.css";
 
  
  
-import { SessionProvider, signIn } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
  
 import AuthLayout from "@/components/layout/AuthLayout";

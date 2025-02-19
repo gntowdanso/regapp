@@ -3,7 +3,7 @@ import React, { useState } from 'react';
  
  
 //import Dropdown from './dropdown'
-import Dropdown from './dropdown';
+import Dropdown from './Dropdown';
 interface AssetFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;

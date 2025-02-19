@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
  
  
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;  // Destructure the id from the params object
+    const id = (await params).id
     
     const will = await getById(id); // Function to get the will by id
     
@@ -24,11 +24,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params:Promise<{ id: string }> }) {
     try {
        
        
-        const { id } = params;  // Destructure the id from the params object
+      const id = (await params).id
         console.log("api delete:",id)
         const deletedWill = await deleteData(id);
            

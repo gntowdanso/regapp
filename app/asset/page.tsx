@@ -1,7 +1,7 @@
 // pages/assets/index.tsx
 "use client";
 
-import { Space } from 'lucide-react';
+//import { Space } from 'lucide-react';
 import { useSession } from 'next-auth/react';
  
 import { useRouter } from 'next/navigation';
@@ -10,14 +10,23 @@ import React, { useEffect, useState } from 'react';
 
 export default   function Page() {
 
-  const { data: session, status } = useSession();
+  
+  const { data: session } = useSession();
 
   const userId = session?.user?.email;
 
  
 //const userName=session?.user?.name;
 
-  const [ds, setData] = useState([]);
+  interface Asset {
+    id: string;
+    name: string;
+    description: string;
+    value: boolean;
+    imageUrl?: string;
+  }
+
+  const [ds, setData] = useState<Asset[]>([]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -37,6 +46,7 @@ export default   function Page() {
       {
         setMessage(`Error: ${data.message}`);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) 
     {
       setMessage(`Error getting data`);
@@ -76,6 +86,7 @@ export default   function Page() {
           const errorData = await res.json();
           setMessage(`Error: ${errorData.message}`);
         }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setMessage(`Error deleting data`);
       }
@@ -138,6 +149,7 @@ export default   function Page() {
               </td>
               <td className="px-6 py-4 border-b border-gray-300 text-sm text-center">
                 {data.imageUrl? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={data.imageUrl}
                     alt="Document"

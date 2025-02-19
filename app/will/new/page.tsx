@@ -14,10 +14,12 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: session, status } = useSession();
 
   const userId = session?.user?.email;
-  const handleSubmit = async (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -50,17 +52,18 @@ if(dataVar.title=="" || userId=="")
         setMessage(errorData.message || 'Error creating the record!');
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      setMessage(`Error: ${(error as Error).message}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleFileChange = (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleFileChange = (e:any) => {
     setFile(e.target.files[0]);
   };
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: unknown) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
   /*
