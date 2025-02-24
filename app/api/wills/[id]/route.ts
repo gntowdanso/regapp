@@ -1,6 +1,8 @@
  
  
-import { deleteWill, getWillById } from "@/lib/will";
+ 
+//import { deleteWill,getWillById } from "@/lib/Will";
+import { deleteWill , getWillById } from "@/lib/Will";
 import {  NextResponse } from "next/server";
  
  

@@ -1,5 +1,5 @@
-import { getByUserId } from "@/lib/will";
-
+ 
+import { getByUserId } from "@/lib/Will";
 export async function GET(request: Request,{ params }: { params: Promise<{ userId: string }> })
 {
   try {

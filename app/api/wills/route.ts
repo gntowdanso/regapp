@@ -3,7 +3,7 @@
  
  
  
-import { createWill, getWills,updateWill,deleteWill } from '@/lib/will';
+import { createWill, getWills,updateWill,deleteWill } from '@/lib/Will';
 import { NextResponse } from "next/server";
  
  
