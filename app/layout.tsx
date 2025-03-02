@@ -44,7 +44,9 @@ export default async function RootLayout({
     
       <SessionProvider>
       <AuthLayout>{children}</AuthLayout>
+     
       </SessionProvider>
+       
 
       </body>
     </html>
