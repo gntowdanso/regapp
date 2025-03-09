@@ -31,8 +31,8 @@ export default function UpdatePage() {
     
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/wills/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch will details");
+        const res = await fetch(`/api/asset/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch Assets details");
 
         const data: WillData = await res.json();
         setData(data);
@@ -56,7 +56,7 @@ export default function UpdatePage() {
     setMessage("");
 
     try {
-      const res = await fetch(`/api/wills/${id}`, {
+      const res = await fetch(`/api/asset/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataVar),
@@ -64,7 +64,7 @@ export default function UpdatePage() {
 
       if (res.ok) {
         setMessage("Update completed successfully!");
-        router.push("/will");
+        router.push("/asset");
       } else {
         const errorData = await res.json();
         setMessage(`Error: ${errorData.error}`);
@@ -79,7 +79,7 @@ export default function UpdatePage() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-xl font-bold mb-4">Update Will</h1>
+      <h1 className="text-xl font-bold mb-4">Update Asset</h1>
       {message && <p className="mb-4 text-green-500">{message}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">

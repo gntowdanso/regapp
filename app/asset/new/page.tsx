@@ -57,7 +57,7 @@ const Page = () => {
       });
 
       if (res.ok) {
-        setMessage('Will created successfully!');
+        setMessage('Asset created successfully!');
         setData(
           { 
             userId:"",
@@ -151,7 +151,7 @@ const Page = () => {
         />
        
         <label htmlFor="file" className="block mb-2">
-          Upload Will (optional)
+          Upload Asset (optional)
         </label>
         <input
           type="file"
