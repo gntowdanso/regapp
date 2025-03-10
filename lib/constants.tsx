@@ -8,7 +8,7 @@ import {
 
 export const navLinks = [
   {
-    url: "/",
+    url: "/userdashboard",
     icon: <LayoutDashboard />,
     label: "Dashboard",
   },

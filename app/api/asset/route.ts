@@ -53,19 +53,37 @@ export async function POST(req: Request) {
     // Ensure upload directory exists
     await fs.mkdir(UPLOAD_DIR, { recursive: true });
 
-    let imageUrl="";
+    const imageUrl="111";
 
    const formData = await req.formData();
 
    const file = formData.get("file");
-   if (!file) {
-     return NextResponse.json({ error: "No files received." }, { status: 400 });
-   }
+   if (!file) 
+    {
+    
  
-   const buffer = Buffer.from(await (file as Blob).arrayBuffer());
-   const filename = (file as File).name.replaceAll(" ", "_");
+   const buffer = Buffer.from(await (file as unknown as Blob).arrayBuffer());
+   const filename = (file as unknown as File).name.replaceAll(" ", "_");
    console.log(filename);
-   
+   try {
+
+    await fs.mkdir("public/uploads/assets", { recursive: true })
+    const imagePath = `/uploads/assets/${crypto.randomUUID()}-${filename}`
+    await fs.writeFile(
+      `public${imagePath}`,
+      buffer
+    )
+    //imageUrl=imagePath;
+    
+
+   } 
+   catch (error) 
+   {
+     console.log("Error occured ", error);
+    // return NextResponse.json({ Message: "Failed", status: 500 });
+   }
+  // return NextResponse.json({ error: "No files received." }, { status: 400 });
+  }   
 // Sanitize file name and move file to final location
 //const sanitizedFileName = `${crypto.randomUUID()}-${path.basename(filename || '')}`;
  
@@ -78,34 +96,24 @@ const userId =formData.get("userId");
 const willId=formData.get("willId");
 const name=formData.get("name");
 const value=formData.get("value");
-//const imageUrl=formData.get("imageUrl");
+// imageUrl=formData.get("imageUrl");
 const beneficiaryId=formData.get("beneficiaryId")
  
  
 if (!name  ) {
   return NextResponse.json({ message: 'Title and description are required' }, { status: 400 });
 }
-
-
-
-   
-   try {
-
-    await fs.mkdir("public/uploads/assets", { recursive: true })
-    const imagePath = `/uploads/assets/${crypto.randomUUID()}-${filename}`
-    await fs.writeFile(
-      `public${imagePath}`,
-      buffer
-    )
-    imageUrl=imagePath;
-    
-
-   } catch (error) {
-     console.log("Error occured ", error);
-    // return NextResponse.json({ Message: "Failed", status: 500 });
+console.log("Data received",name,description,assetType,location,userId,willId,value,beneficiaryId,imageUrl);
+if (!userId || !willId || !name ||   !value || !beneficiaryId || !assetType || !location) {
+  return NextResponse.json({ message: "Required fields are missing" }, { status: 400 });
+}
+/*
+   if(imageUrl==null)
+   {
+      imageUrl="";
    }
-    
-   
+  
+  */ 
     const newVar = {
       userId,
       willId,
@@ -113,18 +121,23 @@ if (!name  ) {
       description,
       value,
       beneficiaryId,
-      imageUrl,
+      imageUrl:"" ,
       assetType,
       location,
       createdAt: new Date(),
     };
     // Replace `createWill` with actual database logic
+    console.log("Data received 2",name,description,assetType,location,userId,willId,value,beneficiaryId,imageUrl);
+
     const dataVar = await create(newVar); // Assuming `createWill` exists
 
     // Return success response
     return NextResponse.json(dataVar, { status: 201 });
     
-  } catch (error) {
+  } 
+  catch (error) 
+  
+  {
     console.error('Error creating data:', error);
     return NextResponse.json(
       { message: 'Error creating data'},

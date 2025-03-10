@@ -3,18 +3,23 @@
 'use client';
 
 import Dropdown from '@/components/Dropdown';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+//const assetType = formData.get("assetType");
+//const location = formData.get("location");
 
+ 
 const Page = () => {
   const [dataVar, setData] = useState({
-    userId:"",
-  willId  :0,
-  
+  //userId:"",
+  willId  :"0",
+  assetType:"",
+  location:"",
   name   :"" ,  
   description: "",
   value       :0.0,
-  beneficiaryId :0,  
+  beneficiaryId :"0",  
    
   imageUrl     :"" 
   });
@@ -22,6 +27,11 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
+
+
+  const { data: session, status } = useSession();
+
+  const userId = session?.user?.email;
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -37,17 +47,18 @@ const Page = () => {
 
       const formData = new FormData();
       formData.append('name', dataVar.name);
+      formData.append('location', "Accra");
+      formData.append('assetType', "Property");
+      formData.append('userId', userId?.toString()||"");
       formData.append('description', dataVar.description);
-      formData.append('willId', dataVar.willId.toString());
-      formData.append('beneficiaryId', dataVar.beneficiaryId.toString());
+      formData.append('willId', "0");
+      formData.append('beneficiaryId', "0");
       formData.append('value', dataVar.value.toString());
     
       if (file) 
         {
         formData.append('file', file); // Add file to the formData
       }
-
-
 
 
 
@@ -60,13 +71,14 @@ const Page = () => {
         setMessage('Asset created successfully!');
         setData(
           { 
-            userId:"",
-            willId  :0,
-            
+            //userId:"",
+            willId  :"0",
+            assetType:"",
+            location:"",
             name   :"" ,  
             description: "",
             value       :0.0,
-            beneficiaryId :0,  
+            beneficiaryId :"0",  
              
             imageUrl     :""
 
@@ -113,7 +125,7 @@ const Page = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-xl font-bold mb-4">Add Will</h1>
+      <h1 className="text-xl font-bold mb-4">Add Asset</h1>
       {message && (
         <p className={`mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>
           {message}
