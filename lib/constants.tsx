@@ -20,12 +20,12 @@ export const navLinks = [
     label: "Wills",
   },
   {
-    url: "/asset",
+    url: "/assets",
     icon: <Tag />,
     label: "Assets",
   },
   {
-    url: "/beneficiallies",
+    url: "/contact",
     icon: <ShoppingBag />,
     label: "Contacts",
   },

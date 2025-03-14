@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
- 
+//import { PrismaClient } from '@prisma/client';
 //import formidable from 'formidable';
  
 //import { Readable } from 'stream';
@@ -89,15 +89,15 @@ export async function POST(req: Request) {
  
  
 //const title = formData.get("title");
-const description = formData.get("description");
-const assetType = formData.get("assetType");
-const location = formData.get("location");
-const userId =formData.get("userId");
-const willId=formData.get("willId");
-const name=formData.get("name");
-const value=formData.get("value");
+const description = formData.get("description")?.toString();
+const assetType = formData.get("assetType")?.toString();
+const location = formData.get("location")?.toString();
+const userId =formData.get("userId")?.toString();
+const willId=formData.get("willId")?.toString();
+const name=formData.get("name")?.toString();
+const value=formData.get("value")?.toString();
 // imageUrl=formData.get("imageUrl");
-const beneficiaryId=formData.get("beneficiaryId")
+const beneficiaryId=formData.get("beneficiaryId")?.toString();
  
  
 if (!name  ) {
@@ -116,21 +116,30 @@ if (!userId || !willId || !name ||   !value || !beneficiaryId || !assetType || !
   */ 
     const newVar = {
       userId,
-      willId,
+     // willId,
       name,
       description,
-      value,
-      beneficiaryId,
-      imageUrl:"" ,
-      assetType,
-      location,
+      //value,
+      //beneficiaryId,
+     // imageUrl:"" ,
+      //assetType,
+     // location,
       createdAt: new Date(),
     };
     // Replace `createWill` with actual database logic
     console.log("Data received 2",name,description,assetType,location,userId,willId,value,beneficiaryId,imageUrl);
 
     const dataVar = await create(newVar); // Assuming `createWill` exists
-
+/*   
+let data=newVar;
+    const prisma = new PrismaClient();
+    
+    
+  const  dataVar= await prisma.asset.create(
+        data
+      );
+    */
+    
     // Return success response
     return NextResponse.json(dataVar, { status: 201 });
     

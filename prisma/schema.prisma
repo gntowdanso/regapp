@@ -36,14 +36,14 @@ model Will {
 
 model Asset {
   id            Int @id @default(autoincrement())
-  userId       String
-  willId       Int
-  assetType    String 
-  location     String
-  name         String   @db.VarChar(50)
-  description  String?  @db.VarChar(1000)
-  value        Float        @default(0.0)
-  beneficiaryId Int ? 
+  userId       String?   
+  willId       Int    @default(0)
+  assetType    String? 
+  location     String? 
+  name         String?    
+  description  String?   
+  value        Float ?       @default(0.0)
+  beneficiaryId Int ?     @default(0)
    
   imageUrl     String?      // URL of the asset image
   @@index([id]) // Index for efficient user lookups
@@ -110,9 +110,7 @@ model Invoice {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   @@index([id]) // Index for efficient user lookups
-  // Relationships
-  //user         User?         @relation(fields: [userId], references: [id])
-  //will         Will?         @relation(fields: [willId], references: [id])
+  
 }
 
 model Payment {
@@ -127,9 +125,7 @@ model Payment {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 @@index([id]) // Index for efficient user lookups
-  // Relationships
-  //invoice        Invoice?      @relation(fields: [invoiceId], references: [id])
-  //user           User?         @relation(fields: [userId], references: [id])
+  
 }
 
 model Contact {
@@ -142,8 +138,8 @@ model Contact {
   createdAt       DateTime     @default(now()) // Timestamp of record creation
   updatedAt       DateTime     @updatedAt      // Automatically updates on record modification
   @@index([id]) // Index for efficient user lookups
-  // Relationships
-  //user            User?        @relation(fields: [userId], references: [id])
+  
+  
 }
 
 
@@ -178,11 +174,7 @@ model Account {
   createdAt         DateTime @default(now())     // Timestamp for when the account was created
   updatedAt         DateTime @updatedAt          // Automatically updated when the account changes
 
-  // Relations
- // user              User     @relation(fields: [userId], references: [id])
-
-  @@unique([provider, providerAccountId]) // Ensure unique combination of provider and providerAccountId
-  @@index([userId]) // Index for efficient user lookups
+    @@index([userId]) // Index for efficient user lookups
 }
 
 model AssetType {

@@ -23,6 +23,7 @@ export default function Page() {
 
   const router = useRouter();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
     setMessage(`Loading data ... please wait`); // Moved here, inside the function
     try {
@@ -58,7 +59,8 @@ export default function Page() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this will?')) {
+    if (confirm('Are you sure you want to delete this will?')) 
+      {
       try {
         const res = await fetch(`/api/wills/${id}`, {
           method: 'DELETE',
