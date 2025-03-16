@@ -1,6 +1,7 @@
 "use client";
- 
- 
+
+//import {userDashboard} from '../components/userDashboard';
+import UserDashboard from '../components/userdashboard';
  
  
  
@@ -8,8 +9,9 @@ export default function Home() {
   return (
      
     <div>
-      <h1>Welcome to the Dashboard</h1>
-      <p>This content is only visible to authenticated users.</p>
+      
+     
+     <UserDashboard />;
     </div>
    
   );
