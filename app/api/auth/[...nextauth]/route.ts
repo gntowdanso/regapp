@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 // additional
  
 //import CredentialsProvider from "next-auth/providers/credentials";
-import Github from "next-auth/providers/github";
+//import Github from "next-auth/providers/github";
 //import { useState } from "react";
 //import Email from "next-auth/providers/email";
 import Google from "next-auth/providers/google";
@@ -14,11 +14,12 @@ const handler = NextAuth({
   
   
     providers: [
-
+/*
         Github({
             clientId: process.env.GITHUB_ID as string,
             clientSecret: process.env.GITHUB_SECRET as string,
         }),
+        */
         Google({
           clientId: process.env.GOOGLE_CLIENT_ID?? "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET?? "",

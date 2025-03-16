@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 //react icons
-import { FaGithub } from "react-icons/fa";
+//import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
@@ -107,15 +107,7 @@ const SignIn = () => {
             >
               <FcGoogle className="size-8 left-2.5 top-2.5" />
             </Button>
-            <Button
-              disabled={false}
-              onClick={(e) => handleProvider(e, "github")}
-              variant="outline"
-              size="lg"
-              className="bg-slate-300 hover:bg-slate-400 hover:scale-110 rounded-2xl"
-            >
-              <FaGithub className="size-8 left-2.5 top-2.5" />
-            </Button>
+           
           </div>
           <p className="text-center text-sm mt-2 text-muted-foreground">
             Create new account
@@ -133,3 +125,15 @@ const SignIn = () => {
 };
 
 export default SignIn;
+/*
+ /*
+            <Button
+              disabled={false}
+              onClick={(e) => handleProvider(e, "github")}
+              variant="outline"
+              size="lg"
+              className="bg-slate-300 hover:bg-slate-400 hover:scale-110 rounded-2xl"
+            >
+              <FaGithub className="size-8 left-2.5 top-2.5" />
+            </Button>
+            */

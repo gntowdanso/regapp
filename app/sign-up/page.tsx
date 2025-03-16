@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 //react icons
-import { FaGithub } from "react-icons/fa";
+//import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -134,15 +134,7 @@ const SignUp = () => {
             >
               <FcGoogle className="size-8 left-2.5 top-2.5" />
             </Button>
-            <Button
-              disabled={false}
-              onClick={(e) => handleProvider(e,"github")}
-              variant="outline"
-              size="lg"
-              className="bg-slate-300 hover:bg-slate-400 hover:scale-110"
-            >
-              <FaGithub className="size-8 left-2.5 top-2.5" />
-            </Button>
+             
           </div>
           <p className="text-center text-sm mt-2 text-muted-foreground">
             Already have an account?
