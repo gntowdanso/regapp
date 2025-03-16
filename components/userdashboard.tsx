@@ -46,7 +46,7 @@ const UserDashboard = () => {
         <Link href="/asset">
           <div className="p-5 bg-yellow-500 text-white rounded-lg shadow-lg cursor-pointer hover:bg-yellow-600 transition">
             <h2 className="text-xl font-semibold">Total Asset Value</h2>
-            <p className="text-3xl font-bold">GHS{stats.totalAssetValue.toLocaleString()}</p>
+            <p className="text-3xl font-bold">GHS{stats.totalAssetValue.toString()}</p>
           </div>
         </Link>
 
